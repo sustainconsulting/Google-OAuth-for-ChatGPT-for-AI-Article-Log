@@ -1,0 +1,124 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AI Article Logger",
+    "version": "1.0.0",
+    "description": "Appends a new row to the Google Sheet 'AI Article Log' with fields Title, Author, Date, Summary, Topic, and URL."
+  },
+  "servers": [
+    {
+      "url": "https://sheets.googleapis.com/v4"
+    }
+  ],
+  "paths": {
+    "/spreadsheets/{spreadsheetId}/values/{range}:append": {
+      "post": {
+        "operationId": "appendArticleRow",
+        "summary": "Append a new article entry to the 'AI Article Log' sheet",
+        "parameters": [
+          {
+            "name": "spreadsheetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "15Ntjpo1Tf1ATAkv51bu6Nx1d3_OYfKBSEwqZ0snqBjU"
+            }
+          },
+          {
+            "name": "range",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "'AI Article Log'!A1:F1"
+            }
+          },
+          {
+            "name": "valueInputOption",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["RAW", "USER_ENTERED"],
+              "default": "USER_ENTERED"
+            }
+          },
+          {
+            "name": "insertDataOption",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["OVERWRITE", "INSERT_ROWS"],
+              "default": "INSERT_ROWS"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "majorDimension": {
+                    "type": "string",
+                    "example": "ROWS"
+                  },
+                  "values": {
+                    "type": "array",
+                    "description": "Each inner array represents one row of values to append to the 'AI Article Log' sheet.",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "example": [
+                      [
+                        "The Philanthropic Reset: Three Solutions for a Future-Ready Nonprofit Sector",
+                        "Google.org",
+                        "11/01/2025",
+                        "• Argues philanthropy must evolve to match AI-driven change.\\n• Calls for more investment in nonprofit tech infrastructure.\\n• Recommends flexible, risk-tolerant funding models.",
+                        "Philanthropy / AI",
+                        "https://example.com"
+                      ]
+                    ]
+                  }
+                },
+                "required": ["values"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Row appended successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "googleOAuth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://accounts.google.com/o/oauth2/auth",
+            "tokenUrl": "https://oauth2.googleapis.com/token",
+            "scopes": {
+              "https://www.googleapis.com/auth/spreadsheets": "Write access to Google Sheets"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "googleOAuth": ["https://www.googleapis.com/auth/spreadsheets"]
+    }
+  ]
+}
