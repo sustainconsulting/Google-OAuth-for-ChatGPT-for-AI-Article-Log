@@ -1,0 +1,11 @@
+{
+  "majorDimension": "ROWS",
+  "values": [[
+    "Title",
+    "Author",
+    "MM/DD/YYYY",
+    "• Bullet 1\\n• Bullet 2\\n• Bullet 3",
+    "Topic",
+    "URL"
+  ]]
+}
